@@ -35,7 +35,7 @@ section{padding:58px 0}.light{background:var(--cream);color:#15211a}.section-tit
 <div class="kicker">EARLY-SEASON BOOKING · ORANGE COUNTY</div>
 <h1>Get your lights up before the holiday rush.</h1>
 <p>November installation dates are filling now. Book early and enjoy a custom holiday display without the last-minute scramble.</p>
-<div class="cta"><a class="btn" href="#quote">Get a Free Quote</a><a class="btn alt" href="sms:+14242341707">Text a Home Photo</a><a class="btn alt" href="tel:+14242341707">Call (424) 234-1707</a></div>
+<div class="cta"><a class="btn" href="#quote">Get a Free Quote</a><a class="btn alt" href="#housePhoto">Send a Home Photo</a><a class="btn alt" href="tel:+14242341707">Call (424) 234-1707</a></div>
 <div class="stats"><span>✦ 6 years of experience</span><span>✦ Residential & commercial</span><span>✦ Install, maintain & take down</span></div>
 </div></header>
 
@@ -67,32 +67,34 @@ section{padding:58px 0}.light{background:var(--cream);color:#15211a}.section-tit
 </div></section>
 
 <section id="quote"><div class="wrap quote">
-<div><div class="kicker">NOVEMBER INSTALLATIONS NOW BOOKING</div><h2 class="section-title">Let’s design your holiday display.</h2><p>Choose a preferred date and morning or afternoon. We’ll confirm availability when we respond.</p><p><strong>Call or text:</strong><br><a href="tel:+14242341707" style="font-size:1.6rem;font-weight:900;color:var(--gold)">(424) 234-1707</a></p><p><a class="btn alt" href="sms:+14242341707?&body=Hi%20Get%20Lit-OC!%20I%27d%20like%20a%20quote.%20I%27m%20sending%20a%20photo%20of%20my%20home.">Text Us a Photo of Your Home</a></p><p class="service">Serving Laguna Niguel, Mission Viejo, Aliso Viejo, Lake Forest, San Clemente and surrounding Orange County communities.</p></div>
-<form class="form" id="quoteForm">
-<label>Name<input id="name" required></label>
-<label>Phone<input id="phone" type="tel" required placeholder="(555) 555-5555"></label>\n<label>City<input id="city" required></label>
-<label>Property type<select id="property"><option>Residential home</option><option>Commercial property</option><option>HOA or community</option><option>Other</option></select></label>
-<label>Preferred installation date<input id="date" type="date"></label>
-<label>Preferred time<select id="time"><option>Morning</option><option>Afternoon</option></select></label>
-<label>What would you like lit?<textarea id="details" rows="4" placeholder="Roofline, palms, windows, bushes..."></textarea></label>
-<button class="btn" type="submit">Request This Date</button>
-<p style="font-size:.8rem;color:#657169">This opens a text message to Get Lit-OC with your request. Dates are not final until confirmed.</p>
+<div><div class="kicker">NOVEMBER INSTALLATIONS NOW BOOKING</div><h2 class="section-title">Let’s design your holiday display.</h2><p>Choose a preferred date and morning or afternoon. We’ll confirm availability when we respond.</p><p><strong>Call or text:</strong><br><a href="tel:+14242341707" style="font-size:1.6rem;font-weight:900;color:var(--gold)">(424) 234-1707</a></p><p><a class="btn alt" href="#housePhoto">Upload a Photo of Your Home</a></p><p class="service">Serving Laguna Niguel, Mission Viejo, Aliso Viejo, Lake Forest, San Clemente and surrounding Orange County communities.</p></div>
+<form class="form" id="quoteForm" action="https://formsubmit.co/alison.brown01@gmail.com" method="POST" enctype="multipart/form-data">
+<input type="hidden" name="_subject" value="New Get Lit-OC Quote Request">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_next" value="https://getlit-oc.com/?quote=sent#quote">
+<label>Name<input name="Name" required></label>
+<label>Phone<input name="Phone" type="tel" required placeholder="(555) 555-5555"></label>
+<label>Email<input name="Email" type="email" required placeholder="you@example.com"></label>
+<label>City<input name="City" required></label>
+<label>Property type<select name="Property type"><option>Residential home</option><option>Commercial property</option><option>HOA or community</option><option>Other</option></select></label>
+<label>Preferred installation date<input name="Preferred installation date" type="date"></label>
+<label>Preferred time<select name="Preferred time"><option>Morning</option><option>Afternoon</option></select></label>
+<label>What would you like lit?<textarea name="What would you like lit?" rows="4" placeholder="Roofline, palms, windows, bushes..."></textarea></label>
+<label id="housePhoto">Photo of your home<input name="attachment" type="file" accept="image/*"></label>
+<p style="font-size:.85rem;color:#657169">A front photo helps us quote faster. You can submit without one if you don't have it handy.</p>
+<button class="btn" type="submit">Send My Quote Request</button>
+<p style="font-size:.8rem;color:#657169">Your request will be emailed directly to Get Lit-OC. Preferred dates are confirmed when we respond.</p>
 </form>
 </div></section>
 <footer class="footer"><div class="wrap"><strong>Get Lit-OC</strong> · Residential & commercial holiday lighting · <a href="tel:+14242341707">(424) 234-1707</a></div></footer>
 <script>
-document.getElementById('quoteForm').addEventListener('submit',function(e){e.preventDefault();
-const v=id=>document.getElementById(id).value.trim();
-const msg='Hi Get Lit-OC! I would like a quote.\nName: '+v('name')+'\nPhone: '+v('phone')+'\nCity: '+v('city')+'\nProperty: '+v('property')+'\nPreferred date: '+v('date')+'\nTime: '+v('time')+'\nDetails: '+v('details');
-document.getElementById('quoteText').value=msg;
-document.getElementById('textQuote').href='sms:+14242341707?&body='+encodeURIComponent(msg);
-document.getElementById('quoteResult').classList.add('show');
-document.getElementById('quoteResult').scrollIntoView({behavior:'smooth',block:'nearest'});
-});
-document.getElementById('copyQuote').addEventListener('click',async function(){
-const text=document.getElementById('quoteText').value;
-try{await navigator.clipboard.writeText(text);document.getElementById('copyStatus').textContent='Copied. Text it to (424) 234-1707.';}
-catch(e){document.getElementById('quoteText').select();document.execCommand('copy');document.getElementById('copyStatus').textContent='Copied. Text it to (424) 234-1707.';}
-});
+if(new URLSearchParams(window.location.search).get('quote')==='sent'){
+  const note=document.createElement('div');
+  note.style.cssText='background:#edf7ef;color:#15211a;padding:14px 16px;border-radius:12px;margin-bottom:16px;border:1px solid #bad4c1;font-weight:700';
+  note.textContent='Thanks! Your quote request was sent to Get Lit-OC. We will follow up to confirm availability.';
+  const form=document.getElementById('quoteForm');
+  form.parentNode.insertBefore(note,form);
+}
 </script>
 </body></html>
