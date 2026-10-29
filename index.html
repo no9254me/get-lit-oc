@@ -84,8 +84,8 @@ section{padding:58px 0}.light{background:var(--cream);color:#15211a}.section-tit
 <strong>Your request is ready.</strong>
 <textarea id="quoteText" readonly></textarea>
 <div class="quote-actions">
-<a class="btn" id="emailQuote" href="#">Email Request</a>
-<a class="btn" id="textQuote" href="#">Text Request</a>
+<button class="btn" type="button" id="emailQuote">Email Request</button>
+<button class="btn" type="button" id="textQuote">Text Request</button>
 <button class="btn" type="button" id="copyQuote">Copy Request</button>
 <button class="btn" type="button" id="sharePhoto">Share Selected Photo</button>
 </div>
@@ -98,15 +98,14 @@ section{padding:58px 0}.light{background:var(--cream);color:#15211a}.section-tit
 const quoteForm=document.getElementById('quoteForm');
 const result=document.getElementById('quoteResult');
 const quoteText=document.getElementById('quoteText');
-const emailQuote=document.getElementById('emailQuote');
-const textQuote=document.getElementById('textQuote');
 const copyStatus=document.getElementById('copyStatus');
 const photoFile=document.getElementById('photoFile');
+let currentMsg='';
 
 quoteForm.addEventListener('submit',function(e){
   e.preventDefault();
   const v=id=>document.getElementById(id).value.trim();
-  const msg='Get Lit-OC Quote Request\n\nName: '+v('name')+
+  currentMsg='Get Lit-OC Quote Request\n\nName: '+v('name')+
     '\nPhone: '+v('phone')+
     '\nEmail: '+v('email')+
     '\nCity: '+v('city')+
@@ -114,11 +113,29 @@ quoteForm.addEventListener('submit',function(e){
     '\nPreferred date: '+v('date')+
     '\nPreferred time: '+v('time')+
     '\nDetails: '+v('details');
-  quoteText.value=msg;
-  emailQuote.href='mailto:alison.brown01@gmail.com?subject='+encodeURIComponent('New Get Lit-OC Quote Request')+'&body='+encodeURIComponent(msg+'\n\nPlease attach a front photo of your home if available.');
-  textQuote.href='sms:+14242341707?&body='+encodeURIComponent(msg);
+  quoteText.value=currentMsg;
   result.classList.add('show');
   result.scrollIntoView({behavior:'smooth',block:'nearest'});
+});
+
+document.getElementById('emailQuote').addEventListener('click',function(){
+  if(!currentMsg){copyStatus.textContent='Prepare the quote request first.';return;}
+  const url='https://mail.google.com/mail/?view=cm&fs=1&to='+encodeURIComponent('getlit-oc@gmail.com')+
+    '&su='+encodeURIComponent('New Get Lit-OC Quote Request')+
+    '&body='+encodeURIComponent(currentMsg+'\n\nPlease attach a front photo of your home if available.');
+  window.open(url,'_blank');
+  copyStatus.textContent='Gmail should open in a new tab addressed to getlit-oc@gmail.com.';
+});
+
+document.getElementById('textQuote').addEventListener('click',async function(){
+  if(!currentMsg){copyStatus.textContent='Prepare the quote request first.';return;}
+  const isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if(isMobile){
+    window.location.href='sms:+14242341707?&body='+encodeURIComponent(currentMsg);
+  }else{
+    try{await navigator.clipboard.writeText(currentMsg);}catch(e){quoteText.select();document.execCommand('copy');}
+    copyStatus.textContent='Copied for texting. Send it to (424) 234-1707 from your phone.';
+  }
 });
 
 document.getElementById('copyQuote').addEventListener('click',async function(){
@@ -131,9 +148,9 @@ document.getElementById('sharePhoto').addEventListener('click',async function(){
   if(!file){copyStatus.textContent='Choose a house photo first.';photoFile.click();return;}
   if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
     try{await navigator.share({files:[file],title:'Get Lit-OC House Photo',text:'House photo for my Get Lit-OC quote request'});copyStatus.textContent='Photo share opened.';}
-    catch(e){if(e.name!=='AbortError') copyStatus.textContent='Your browser could not share the photo. Use Email Request and attach the photo there.';}
+    catch(e){if(e.name!=='AbortError') copyStatus.textContent='Could not share directly. Open Email Request and attach the photo there.';}
   } else {
-    copyStatus.textContent='Your browser cannot share files directly. Click Email Request and attach the selected photo in your email.';
+    copyStatus.textContent='Click Email Request, then attach this photo in Gmail.';
   }
 });
 </script>
