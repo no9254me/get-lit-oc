@@ -68,33 +68,73 @@ section{padding:58px 0}.light{background:var(--cream);color:#15211a}.section-tit
 
 <section id="quote"><div class="wrap quote">
 <div><div class="kicker">NOVEMBER INSTALLATIONS NOW BOOKING</div><h2 class="section-title">Let’s design your holiday display.</h2><p>Choose a preferred date and morning or afternoon. We’ll confirm availability when we respond.</p><p><strong>Call or text:</strong><br><a href="tel:+14242341707" style="font-size:1.6rem;font-weight:900;color:var(--gold)">(424) 234-1707</a></p><p><a class="btn alt" href="#housePhoto">Upload a Photo of Your Home</a></p><p class="service">Serving Laguna Niguel, Mission Viejo, Aliso Viejo, Lake Forest, San Clemente and surrounding Orange County communities.</p></div>
-<form class="form" id="quoteForm" action="https://formsubmit.co/alison.brown01@gmail.com" method="POST" enctype="multipart/form-data">
-<input type="hidden" name="_subject" value="New Get Lit-OC Quote Request">
-<input type="hidden" name="_template" value="table">
-<input type="hidden" name="_captcha" value="false">
-<input type="hidden" name="_next" value="https://getlit-oc.com/?quote=sent#quote">
-<label>Name<input name="Name" required></label>
-<label>Phone<input name="Phone" type="tel" required placeholder="(555) 555-5555"></label>
-<label>Email<input name="Email" type="email" required placeholder="you@example.com"></label>
-<label>City<input name="City" required></label>
-<label>Property type<select name="Property type"><option>Residential home</option><option>Commercial property</option><option>HOA or community</option><option>Other</option></select></label>
-<label>Preferred installation date<input name="Preferred installation date" type="date"></label>
-<label>Preferred time<select name="Preferred time"><option>Morning</option><option>Afternoon</option></select></label>
-<label>What would you like lit?<textarea name="What would you like lit?" rows="4" placeholder="Roofline, palms, windows, bushes..."></textarea></label>
-<label id="housePhoto">Photo of your home<input name="attachment" type="file" accept="image/*"></label>
-<p style="font-size:.85rem;color:#657169">A front photo helps us quote faster. You can submit without one if you don't have it handy.</p>
-<button class="btn" type="submit">Send My Quote Request</button>
-<p style="font-size:.8rem;color:#657169">Your request will be emailed directly to Get Lit-OC. Preferred dates are confirmed when we respond.</p>
+<form class="form" id="quoteForm">
+<label>Name<input id="name" required></label>
+<label>Phone<input id="phone" type="tel" required placeholder="(555) 555-5555"></label>
+<label>Email<input id="email" type="email" required placeholder="you@example.com"></label>
+<label>City<input id="city" required></label>
+<label>Property type<select id="property"><option>Residential home</option><option>Commercial property</option><option>HOA or community</option><option>Other</option></select></label>
+<label>Preferred installation date<input id="date" type="date"></label>
+<label>Preferred time<select id="time"><option>Morning</option><option>Afternoon</option></select></label>
+<label>What would you like lit?<textarea id="details" rows="4" placeholder="Roofline, palms, windows, bushes..."></textarea></label>
+<label id="housePhoto">Photo of your home<input id="photoFile" type="file" accept="image/*"></label>
+<p style="font-size:.85rem;color:#657169">Choose a front photo if you have one. After you prepare the request, you can share the photo from your device.</p>
+<button class="btn" type="submit">Prepare My Quote Request</button>
+<div class="quote-result" id="quoteResult">
+<strong>Your request is ready.</strong>
+<textarea id="quoteText" readonly></textarea>
+<div class="quote-actions">
+<a class="btn" id="emailQuote" href="#">Email Request</a>
+<a class="btn" id="textQuote" href="#">Text Request</a>
+<button class="btn" type="button" id="copyQuote">Copy Request</button>
+<button class="btn" type="button" id="sharePhoto">Share Selected Photo</button>
+</div>
+<p id="copyStatus" style="font-size:.85rem;margin-bottom:0"></p>
+</div>
 </form>
 </div></section>
 <footer class="footer"><div class="wrap"><strong>Get Lit-OC</strong> · Residential & commercial holiday lighting · <a href="tel:+14242341707">(424) 234-1707</a></div></footer>
 <script>
-if(new URLSearchParams(window.location.search).get('quote')==='sent'){
-  const note=document.createElement('div');
-  note.style.cssText='background:#edf7ef;color:#15211a;padding:14px 16px;border-radius:12px;margin-bottom:16px;border:1px solid #bad4c1;font-weight:700';
-  note.textContent='Thanks! Your quote request was sent to Get Lit-OC. We will follow up to confirm availability.';
-  const form=document.getElementById('quoteForm');
-  form.parentNode.insertBefore(note,form);
-}
+const quoteForm=document.getElementById('quoteForm');
+const result=document.getElementById('quoteResult');
+const quoteText=document.getElementById('quoteText');
+const emailQuote=document.getElementById('emailQuote');
+const textQuote=document.getElementById('textQuote');
+const copyStatus=document.getElementById('copyStatus');
+const photoFile=document.getElementById('photoFile');
+
+quoteForm.addEventListener('submit',function(e){
+  e.preventDefault();
+  const v=id=>document.getElementById(id).value.trim();
+  const msg='Get Lit-OC Quote Request\n\nName: '+v('name')+
+    '\nPhone: '+v('phone')+
+    '\nEmail: '+v('email')+
+    '\nCity: '+v('city')+
+    '\nProperty: '+v('property')+
+    '\nPreferred date: '+v('date')+
+    '\nPreferred time: '+v('time')+
+    '\nDetails: '+v('details');
+  quoteText.value=msg;
+  emailQuote.href='mailto:alison.brown01@gmail.com?subject='+encodeURIComponent('New Get Lit-OC Quote Request')+'&body='+encodeURIComponent(msg+'\n\nPlease attach a front photo of your home if available.');
+  textQuote.href='sms:+14242341707?&body='+encodeURIComponent(msg);
+  result.classList.add('show');
+  result.scrollIntoView({behavior:'smooth',block:'nearest'});
+});
+
+document.getElementById('copyQuote').addEventListener('click',async function(){
+  try{await navigator.clipboard.writeText(quoteText.value);copyStatus.textContent='Copied. You can paste it into a text or email.';}
+  catch(e){quoteText.select();document.execCommand('copy');copyStatus.textContent='Copied. You can paste it into a text or email.';}
+});
+
+document.getElementById('sharePhoto').addEventListener('click',async function(){
+  const file=photoFile.files && photoFile.files[0];
+  if(!file){copyStatus.textContent='Choose a house photo first.';photoFile.click();return;}
+  if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+    try{await navigator.share({files:[file],title:'Get Lit-OC House Photo',text:'House photo for my Get Lit-OC quote request'});copyStatus.textContent='Photo share opened.';}
+    catch(e){if(e.name!=='AbortError') copyStatus.textContent='Your browser could not share the photo. Use Email Request and attach the photo there.';}
+  } else {
+    copyStatus.textContent='Your browser cannot share files directly. Click Email Request and attach the selected photo in your email.';
+  }
+});
 </script>
 </body></html>
