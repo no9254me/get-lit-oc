@@ -127,14 +127,22 @@ document.getElementById('emailQuote').addEventListener('click',function(){
   copyStatus.textContent='Gmail should open in a new tab addressed to getlit-oc@gmail.com.';
 });
 
-document.getElementById('textQuote').addEventListener('click',async function(){
+const textBtn=document.getElementById('textQuote');
+const isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+if(!isMobile){textBtn.textContent='Copy for Texting';}
+
+textBtn.addEventListener('click',async function(){
   if(!currentMsg){copyStatus.textContent='Prepare the quote request first.';return;}
-  const isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   if(isMobile){
-    window.location.href='sms:+14242341707?&body='+encodeURIComponent(currentMsg);
+    window.location.href='sms:+14242341707?body='+encodeURIComponent(currentMsg);
   }else{
-    try{await navigator.clipboard.writeText(currentMsg);}catch(e){quoteText.select();document.execCommand('copy');}
-    copyStatus.textContent='Copied for texting. Send it to (424) 234-1707 from your phone.';
+    try{await navigator.clipboard.writeText(currentMsg);}
+    catch(e){quoteText.select();document.execCommand('copy');}
+    copyStatus.innerHTML='<strong>Copied!</strong> Send this message to <strong>(424) 234-1707</strong> from your phone.';
+    copyStatus.style.fontSize='1rem';
+    copyStatus.style.padding='10px';
+    copyStatus.style.background='#fff3cd';
+    copyStatus.style.borderRadius='8px';
   }
 });
 
