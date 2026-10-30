@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
 <title>Get Lit-OC | Christmas Light Installation in Orange County</title>
 <meta name="description" content="Professional Christmas light installation in Orange County. Rooflines, palms, landscape lighting, maintenance and takedown.">
 <link rel="canonical" href="https://getlit-oc.com/">
@@ -13,7 +13,7 @@ a{color:inherit} .wrap{max-width:1100px;margin:auto;padding:0 22px}
 .top{background:#b9262f;text-align:center;padding:9px 16px;font-weight:800;letter-spacing:.02em}
 nav{display:flex;align-items:center;justify-content:space-between;padding:18px 0;gap:18px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:11px;font-weight:900;font-size:1.4rem;text-decoration:none;color:white}.brand img{width:64px;height:64px;border-radius:16px;object-fit:cover;box-shadow:0 4px 16px rgba(0,0,0,.25)}.brand b{color:var(--gold)}nav a{text-decoration:none;margin-left:18px;color:#eef5f0}
-.hero{padding:96px 0 82px;background:linear-gradient(90deg,rgba(4,12,9,.86) 0%,rgba(4,12,9,.72) 38%,rgba(4,12,9,.28) 68%,rgba(4,12,9,.12) 100%),url('/our-work.webp') center/cover no-repeat;min-height:620px;display:flex;align-items:center}
+.hero{padding:96px 0 82px;background:linear-gradient(90deg,rgba(4,12,9,.86) 0%,rgba(4,12,9,.72) 38%,rgba(4,12,9,.28) 68%,rgba(4,12,9,.12) 100%),url('/our-work.webp?v=20261030-1') center/cover no-repeat;min-height:620px;display:flex;align-items:center}
 .kicker{color:var(--gold);font-size:.82rem;font-weight:900;letter-spacing:.14em}.hero h1{font-size:clamp(2.7rem,6vw,5.6rem);line-height:.95;margin:.18em 0}.hero p{max-width:650px;font-size:1.16rem;color:#f3f6f4;text-shadow:0 2px 12px rgba(0,0,0,.55)}.hero h1{text-shadow:0 3px 18px rgba(0,0,0,.6)}
 .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}.btn{display:inline-block;padding:14px 20px;border-radius:999px;text-decoration:none;font-weight:800;background:var(--gold);color:#132016}.btn.alt{background:transparent;color:white;border:1px solid #6f8d7a}
 .stats{display:flex;gap:24px;flex-wrap:wrap;margin-top:34px;color:#dce7df;font-weight:700}
@@ -49,7 +49,7 @@ section{padding:58px 0}.light{background:var(--cream);color:#15211a}.section-tit
 </div>
 </div></section>
 
-<section id="work"><div class="wrap"><div class="kicker">REAL GET LIT-OC INSTALLATIONS</div><h2 class="section-title">Our Work</h2><p class="service">A few of our actual Orange County installations, including a daytime-to-nighttime Before & After.</p><img class="work-shot" src="/our-work.webp" alt="Get Lit-OC project gallery"></div></section>
+<section id="work"><div class="wrap"><div class="kicker">REAL GET LIT-OC INSTALLATIONS</div><h2 class="section-title">Our Work</h2><p class="service">A few of our actual Orange County installations, including a daytime-to-nighttime Before & After.</p><img class="work-shot" src="/our-work.webp?v=20261030-1" alt="Get Lit-OC project gallery"></div></section>
 
 <section><div class="wrap">
 <h2 class="section-title">Why Get Lit-OC</h2><p class="service">Spend your season enjoying the lights, not wrestling with ladders, clips and tangled cords. Our team handles the demanding work so your home looks polished and you stay safely on the ground.</p>
@@ -79,7 +79,7 @@ section{padding:58px 0}.light{background:var(--cream);color:#15211a}.section-tit
 <label>What would you like lit?<textarea id="details" rows="4" placeholder="Roofline, palms, windows, bushes..."></textarea></label>
 <label id="housePhoto">Photo of your home<input id="photoFile" type="file" accept="image/*"></label>
 <p style="font-size:.85rem;color:#657169">Choose a front photo if you have one. After you prepare the request, you can share the photo from your device.</p>
-<button class="btn" type="submit">Prepare My Quote Request</button>
+<button class="btn" type="submit">Continue to Send Quote Request</button>
 <div class="quote-result" id="quoteResult">
 <strong>Your request is ready.</strong>
 <textarea id="quoteText" readonly></textarea>
@@ -116,6 +116,8 @@ quoteForm.addEventListener('submit',function(e){
   quoteText.value=currentMsg;
   result.classList.add('show');
   result.scrollIntoView({behavior:'smooth',block:'nearest'});
+  copyStatus.textContent='Your request is ready. Choose Email Request, Text Request, or Copy Request below.';
+  alert('Your quote request is ready. Use one of the send buttons below to send it to Get Lit-OC.');
 });
 
 document.getElementById('emailQuote').addEventListener('click',function(){
